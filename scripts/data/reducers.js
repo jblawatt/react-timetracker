@@ -7,6 +7,7 @@ const initialState = {
         value: 'Hello World',
         startTime: new Date(),
         stopTime: new Date(),
+        tags: [],
     }]
 };
 
