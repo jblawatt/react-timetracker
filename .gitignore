@@ -57,3 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
+# Visual Studio Code config folder
+.vscode
+
+bundle.js
+bundle.js.map
