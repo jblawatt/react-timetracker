@@ -19,6 +19,10 @@ class TimeTrackInputComponent extends Component {
         super(props);
         this.state = { id: 'test', value: '', startTime: new Date(), stopTime: null, tags: [] };
         this.addItem = props.addItem.bind(this);
+        window.l = (window.l || []);
+        window.l.push(this);
+        this.inputItem = React.createRef();
+        this.inputItemWrapper = React.createRef();
     }
 
     toState(attrName, stateAttrName, context) {
@@ -38,14 +42,20 @@ class TimeTrackInputComponent extends Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        console.log("state changed");
+    }
+
     render() {
         return (
             <div className="mdl-grid">
                 <div className="mdl-cell mdl-cell--6-col">
                     <form>
-                        <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                            ref={this.inputItemWrapper}>
                             <input className="mdl-textfield__input"
                                 type="text"
+                                ref={this.inputItem}
                                 id="workin-on-input"
                                 value={this.state.value}
                                 onChange={this.toState("value", "value")}
@@ -101,13 +111,14 @@ class TimeTrackInputComponent extends Component {
                     <span>
                         00:00:00
                     </span>
-                    {true ?
+                    {this.state.isRunning ?
                         <button className="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"
                             onClick={this.onStop.bind(this)}>
                             <i className="material-icons">stop</i>
                         </button>
                         :
                         <button className="mdl-button mdl-js-button mdl-button--fab mdl-button--colored"
+                            onClick={this.onStart.bind(this)}
                         >
                             <i className="material-icons">play_arrow</i>
                         </button>
@@ -118,16 +129,33 @@ class TimeTrackInputComponent extends Component {
     }
 
     onStop(e) {
+        console.log("stopping");
         this.addItem(this.state);
+        clearInterval(this.state._intervalId);
+        // this.inputItemWrapper.classList.remove('is-dirty');
         this.setState((state, props) => {
             console.log("state", state);
             console.log("props", props);
-            return Object.assign({}, state, getInitialState());
+            return Object.assign({}, state, getInitialState(), { isRunning: false });
         });
     }
 
     onStart(e) {
+        console.log("starting");
+        let intervalId = setInterval(() => {
+            this.setState(state => {
+                return Object.assign(state, { stopTime: new Date() });
+            })
+        }, 100);
 
+        this.setState((state, props) => {
+            return Object.assign({}, state, getInitialState(), {
+                startTime: new Date(),
+                stopTime: new Date(),
+                _intervalId: intervalId,
+                isRunning: true,
+            })
+        });
     }
 
     addTagState(value) {

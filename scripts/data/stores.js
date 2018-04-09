@@ -2,6 +2,6 @@ import { createStore } from "redux";
 import { trackingReducer } from "./reducers";
 
 
-const store = createStore(trackingReducer);
+const trackingStore = createStore(trackingReducer);
 
-export { store };
+export { trackingStore };

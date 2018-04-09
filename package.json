@@ -7,12 +7,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "build-watch": "webpack --watch",
-    "serve": "simplehttpserver -p 8080 ."
+    "serve-static": "simplehttpserver -p 8080 .",
+    "serve": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.16.3",
+    "lodash": "^4.17.5",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
     "react-redux": "^5.0.7",

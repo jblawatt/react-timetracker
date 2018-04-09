@@ -16,7 +16,7 @@ let TimeTrackListComponent = function (props) {
             </thead>
             <tbody>
                 {props.items.map((task) => {
-                    return <TimeTrackItemComponent task={task} />
+                    return <TimeTrackItemComponent key={task.id} task={task} />
                 })}
             </tbody>
         </table>
